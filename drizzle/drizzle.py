@@ -64,7 +64,8 @@ class Drizzle(object):
             and "lanczos3".
 
             .. warning::
-              The "gaussian" and "lanczos2/3" kernels **DO NOT** conserve flux.
+              The "gaussian", "tophat", and "lanczos2/3" kernels **DO NOT**
+              conserve flux.
 
         fillval : str, otional
             The value a pixel is set to in the output if the input image does
