@@ -1205,9 +1205,10 @@ clip_polygon_wrap(PyObject *self, PyObject *args)
     return Py_BuildValue("N", list);
 }
 
-/** ---------------------------------------------------------------------------
- * Table of functions callable from python
- */
+/***************************
+ * MODULE INITIALIZATION
+ ***************************/
+
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
@@ -1215,6 +1216,8 @@ clip_polygon_wrap(PyObject *self, PyObject *args)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
 #endif
+
+/* Table of functions callable from python */
 
 static struct PyMethodDef cdrizzle_methods[] = {
     {"tdriz", (PyCFunction) (void (*)(void)) tdriz, METH_VARARGS | METH_KEYWORDS,
@@ -1239,41 +1242,6 @@ static struct PyMethodDef cdrizzle_methods[] = {
 #pragma clang diagnostic pop
 #endif
 
-/** ---------------------------------------------------------------------------
- */
-
-#if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC
-initcdrizzle(void)
-{
-    /* Create the module and add the functions */
-    (void) Py_InitModule("cdrizzle", cdrizzle_methods);
-
-    /* Check for errors */
-    if (PyErr_Occurred()) {
-        Py_FatalError("can't initialize module cdrizzle");
-    }
-
-    import_array();
-
-    PyObject *metadata = PyImport_ImportModule("importlib.metadata");
-    if (metadata) {
-        PyObject *version_func = PyObject_GetAttrString(metadata, "version");
-        PyObject *args = PyTuple_Pack(1, PyUnicode_FromString("drizzle"));
-        PyObject *version_obj = PyObject_CallObject(version_func, args);
-
-        if (version_obj) {
-            sprintf(
-                version_str, "Callable C-based DRIZZLE Version %s", PyUnicode_AsUTF8(version_obj));
-            Py_DECREF(version_obj);
-        }
-        Py_XDECREF(args);
-        Py_XDECREF(version_func);
-        Py_DECREF(metadata);
-    }
-}
-
-#else
 static struct PyModuleDef moduledef = {
     PyModuleDef_HEAD_INIT, "cdrizzle", NULL, -1, cdrizzle_methods, NULL, NULL, NULL, NULL};
 
@@ -1308,5 +1276,3 @@ PyInit_cdrizzle(void)
 
     return m;
 }
-
-#endif
