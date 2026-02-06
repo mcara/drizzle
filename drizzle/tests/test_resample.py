@@ -725,7 +725,7 @@ def test_flux_conservation_nondistorted(kernel, fc, pixel_scale_ratio):
     out_wht = np.zeros(out_shape, dtype=np.float32)
 
     if fc:
-        s, i1, i2 = cdrizzle.tdriz(
+        s, _, _ = cdrizzle.tdriz(
             in_sci,
             in_wht,
             pixmap,
