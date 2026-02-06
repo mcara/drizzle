@@ -4,6 +4,12 @@
 Release Notes
 =============
 
+2.2.1 (unreleased)
+==================
+
+- Fixed version string of the C-based drizzle code to be set
+  to the version of the Python package. [#219]
+
 
 2.2.1 (unreleased)
 ==================
