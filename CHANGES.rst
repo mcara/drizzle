@@ -4,11 +4,10 @@
 Release Notes
 =============
 
-2.2.1 (unreleased)
+3.0.0 (unreleased)
 ==================
 
-- Fixed version string of the C-based drizzle code to be set
-  to the version of the Python package. [#219]
+- Removed version string return value from ``cdrizzle.tdriz()``function. [#219]
 
 
 2.2.1 (unreleased)

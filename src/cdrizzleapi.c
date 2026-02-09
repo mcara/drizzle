@@ -24,12 +24,8 @@
 #include "cdrizzleutil.h"
 #include "tests/drizzletest.h"
 
-#define C_VERSION_STR "2.2.1"
-
 static PyObject *gl_Error;
 FILE *driz_log_handle = NULL;
-
-static char version_str[128] = "Callable C-based DRIZZLE Version >= " C_VERSION_STR;
 
 static PyArrayObject *
 ensure_array(PyObject *obj, int npy_type, int min_depth, int max_depth, int *is_copy)
@@ -733,7 +729,7 @@ _exit:
         PyErr_SetString(error.type, driz_error_get_message(&error));
         return NULL;
     } else {
-        return Py_BuildValue("sii", version_str, p.nmiss, p.nskip);
+        return Py_BuildValue("ii", p.nmiss, p.nskip);
     }
 }
 
@@ -1257,22 +1253,6 @@ PyInit_cdrizzle(void)
     }
 
     import_array();
-
-    PyObject *metadata = PyImport_ImportModule("importlib.metadata");
-    if (metadata) {
-        PyObject *version_func = PyObject_GetAttrString(metadata, "version");
-        PyObject *args = PyTuple_Pack(1, PyUnicode_FromString("drizzle"));
-        PyObject *version_obj = PyObject_CallObject(version_func, args);
-
-        if (version_obj) {
-            sprintf(
-                version_str, "Callable C-based DRIZZLE Version %s", PyUnicode_AsUTF8(version_obj));
-            Py_DECREF(version_obj);
-        }
-        Py_XDECREF(args);
-        Py_XDECREF(version_func);
-        Py_DECREF(metadata);
-    }
 
     return m;
 }
